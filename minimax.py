@@ -1,5 +1,5 @@
 
-from kalaha5 import traverse
+from kalaha import traverse
 
 depth = 4
 
