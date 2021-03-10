@@ -1,7 +1,7 @@
-# https://www.mathplayground.com/mancala.html
 from termcolor import colored
-import sys
-from minimax1 import judge
+from sys import exit
+from minimax import judge
+from kalaha import traverse
 
 #board = [4,4,4,4,4,4,0,  4,4,4,4,4,4,0]
 #         N houses    ^   S houses    ^ 
@@ -14,51 +14,13 @@ def showBoard(board):
     print('   '.join(str(e) for e in board[7:13]),'\n')
     print(colored("1   2   3   4   5   6",'cyan'),"\n")
     
-
-def move(pos):
-    if (pos+1 > 13):
-        return 0
-    else:
-        return pos+1
-
-def traverse(board,side,pos):
-    stack = board[pos]
-    board[pos] = 0
-    
-    if stack==0:
-        return board,side
-    
-    while(stack!=0): # To skip the opponents goal
-        pos = move(pos)
-        if pos==6 and side==0:
-            continue
-        if pos==13 and side==1:
-            continue
-        board[pos]+=1
-        stack-=1
-    
-    if board[pos]==1 and (not pos==6) and (not pos==13) and board[12-pos]>0 :  # Stealing implimentation
-        if side and pos in range(0,6):
-                board[6]+=board[12-pos]+1
-                board[12-(pos)]=0
-                board[pos]=0
-        if not side and pos in range(7,13):
-                board[13]+=board[12-pos]+1
-                board[12-pos]=0
-                board[pos]=0
-        
-    if (side and pos==6) or (not side and pos==13): # Players get another turn 
-        return board, side                          # if it ends in their goal
-    else:
-        return board, not side
-    
-    
+  
 def userInput():
     while(True):
         try:
             i = input()
             if i=="'":
-                sys.exit()
+                exit()
             i = int(i)
             if i>0 and i<7:
                 print("\n")
@@ -90,8 +52,9 @@ print("\n\n\nStart!\n")
 
 c=4
 board=[c,c,c,c,c,c,0,  c,c,c,c,c,c,0]
-side = 1
-ai = True
+side = True
+aiN = True
+aiS = True
 
 while(True):
     if sum(board[0:6])==0 or sum(board[7:13])==0:
@@ -100,14 +63,23 @@ while(True):
     showBoard(board)
     if side:
         print(colored("North","red"),"players turn")
-        if ai:
+        if aiN:
             choice = judge(board,True)
-            print("\nAI:",(choice),"\n\n")
+            print("\nAI:",(choice),end='')
+            #if input()=="'":
+            #    exit()
             board,side = traverse(board,1,choice-1)
         else:
             board,side = traverse(board,1,userInput()-1)
     else:
         print(colored("South","cyan"),"players turn")
-        board,side = traverse(board,0,userInput()+6)
+        if aiS:
+            choice = judge(board,False)
+            print("\nAI:",(choice),end='')
+            #if input()=="'":
+            #    exit()
+            board,side = traverse(board,0,choice+6)
+        else:
+            board,side = traverse(board,0,userInput()+6)
     
     
