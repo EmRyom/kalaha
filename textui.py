@@ -23,12 +23,16 @@ def userInput():
                 exit()
             i = int(i)
             if i>0 and i<7:
-                print("\n")
                 return i
             int("'")
         except ValueError:
             print("Please enter an integer from 1 to 6")
 
+def aiInput(board,side):
+    choice = judge(board,side)
+    print("AI:",choice,end="")
+    if input()=="'": exit()
+    return choice
 
 def gameOver(board):
     board[6] += sum(board[0:6])
@@ -64,22 +68,16 @@ while(True):
     if side:
         print(colored("North","red"),"players turn")
         if aiN:
-            choice = judge(board,True)
-            print("\nAI:",(choice),end='')
-            #if input()=="'":
-            #    exit()
-            board,side = traverse(board,1,choice-1)
+            i = aiInput(board,True)
         else:
-            board,side = traverse(board,1,userInput()-1)
+            i = userInput()
+        board,side = traverse(board,True,i-1)
     else:
         print(colored("South","cyan"),"players turn")
         if aiS:
-            choice = judge(board,False)
-            print("\nAI:",(choice),end='')
-            #if input()=="'":
-            #    exit()
-            board,side = traverse(board,0,choice+6)
+            i = aiInput(board,False)
         else:
-            board,side = traverse(board,0,userInput()+6)
+            i = userInput()
+        board,side = traverse(board,False,i+6)
     
     
