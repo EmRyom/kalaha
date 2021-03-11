@@ -22,7 +22,7 @@ def nextMoves(board,side):
 
 def judge(board,side):
     l = nextMoves(board,side)
-    max = -10000
+    max = -48
     move = 0
     for i in l:
         b = i[0][0]
