@@ -1,5 +1,6 @@
 
 from kalaha import traverse
+from random import randrange
 
 depth = 4
 
@@ -112,5 +113,17 @@ def judge(board,side):
     move = alphaBetaSearch(board, side, 8)[2]
             
     return move
+
+
+def random(board,side):
+    c=[]
+    for pos in range(1,7):
+        if board[pos-1]==0 and side:
+            continue
+        if board[pos+6]==0 and not side:
+            continue
+        c.append(pos)
+    i = randrange(len(c))
+    return c[i]
         
     

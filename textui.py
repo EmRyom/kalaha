@@ -1,6 +1,6 @@
 from termcolor import colored
 from sys import exit
-from minimax import judge
+from minimax import judge, random
 from kalaha import traverse
 
 #board = [4,4,4,4,4,4,0,  4,4,4,4,4,4,0]
@@ -31,7 +31,10 @@ def userInput():
             print("Please enter an integer from 1 to 6")
 
 def aiInput(board,side):
-    choice = judge(board,side)
+    if side:
+        choice = judge(board,side)
+    else:
+        choice = random(board,side)
     print("AI:",choice,end="")
     if input()=="'": exit()
     return choice
@@ -59,8 +62,8 @@ print("\n\n\nStart!\n")
 c=4
 board=[c,c,c,c,c,c,0,  c,c,c,c,c,c,0]
 side = True
-aiN = True
-aiS = True
+aiN = 0
+aiS = 0
 
 while(True):
     if sum(board[0:6])==0 or sum(board[7:13])==0:
