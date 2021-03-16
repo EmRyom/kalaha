@@ -1,6 +1,6 @@
 from termcolor import colored
 from sys import exit
-from minimax import judge
+from minimax import judge, random
 from kalaha import traverse
 
 #board = [4,4,4,4,4,4,0,  4,4,4,4,4,4,0]
@@ -10,7 +10,9 @@ from kalaha import traverse
 def showBoard(board):
     print(colored("6   5   4   3   2   1",'red'),'\n')
     print('   '.join(str(e) for e in list(reversed(board[0:6]))))
-    print(board[6],"                 ",board[13])
+    n=str(board[6])
+    s=str(board[13])
+    print(n," "*(19-len(n)-len(s)),s)
     print('   '.join(str(e) for e in board[7:13]),'\n')
     print(colored("1   2   3   4   5   6",'cyan'),"\n")
     
@@ -29,7 +31,10 @@ def userInput():
             print("Please enter an integer from 1 to 6")
 
 def aiInput(board,side):
-    choice = judge(board,side)
+    if side:
+        choice = judge(board,side)
+    else:
+        choice = random(board,side)
     print("AI:",choice,end="")
     if input()=="'": exit()
     return choice
@@ -43,13 +48,11 @@ def gameOver(board):
     print("Game over")
     if board[6] > board[13]:
         print("North wins")
-        return 1
     if board[6] < board[13]:
         print("South wins")
-        return 0
     if board[6] == board[13]:
         print("Draw")
-        return 2
+    return board[6] - board[13]
 
 
 print("\n\n\nStart!\n")
@@ -57,8 +60,8 @@ print("\n\n\nStart!\n")
 c=4
 board=[c,c,c,c,c,c,0,  c,c,c,c,c,c,0]
 side = True
-aiN = True
-aiS = True
+aiN = 1
+aiS = 0
 
 while(True):
     if sum(board[0:6])==0 or sum(board[7:13])==0:
