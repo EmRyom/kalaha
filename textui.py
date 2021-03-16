@@ -48,13 +48,11 @@ def gameOver(board):
     print("Game over")
     if board[6] > board[13]:
         print("North wins")
-        return 1
     if board[6] < board[13]:
         print("South wins")
-        return 0
     if board[6] == board[13]:
         print("Draw")
-        return 2
+    return board[6] - board[13]
 
 
 print("\n\n\nStart!\n")
@@ -62,7 +60,7 @@ print("\n\n\nStart!\n")
 c=4
 board=[c,c,c,c,c,c,0,  c,c,c,c,c,c,0]
 side = True
-aiN = 0
+aiN = 1
 aiS = 0
 
 while(True):
