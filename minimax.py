@@ -88,11 +88,11 @@ def nextMoves(board,side):
         if b[pos+6]==0 and not side:
             continue
         if side:
-            res = traverse(b, side, pos-1)
-            l.append([[res[0],res[1]],pos])
+            b,s = traverse(b, side, pos-1)
+            l.append((b,s,pos))
         if not side:
-            res = traverse(b, side, pos+6)
-            l.append([[res[0],res[1]],pos])
+            b,s = traverse(b, side, pos+6)
+            l.append((b,s,pos))
     return l
 
 
