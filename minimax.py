@@ -28,19 +28,24 @@ def maxValue(board, side, alpha, beta, count, depth):
     final_action = actions[0]
     
     for a in actions:
-        tboard = a[0][0]
-        tside = a[0][1]
-        v = max(v, minValue(tboard, tside, alpha, beta, count+1, depth))
+        tboard = a[0]
+        tside = a[1]
+        #print(maxValue(tboard, tside, alpha, beta, count+1, depth)[0])
+        if tside != side:
+            v = max(v, minValue(tboard, tside, alpha, beta, count+1, depth))
+        else:
+            v = max(v, maxValue(tboard, tside, alpha, beta, count+1, depth)[0])
+            
         #debug
-        print(str(count) + ':')
-        print('pos: ' + str(a[1]))
-        print('v: ' + str(v))
+        #print(str(count) + ':')
+        #print('pos: ' + str(a[2]))
+        #print('v: ' + str(v))
         if v >= beta:
-            return v
+            return v, final_action
         alpha = max(alpha, v)
         
         # storing best action
-        if count == 1 and alpha == v:
+        if count == 0 and alpha == v:
             final_action = a
         
         
@@ -57,13 +62,19 @@ def minValue(board, side, alpha, beta, count, depth):
     actions = nextMoves(board, side)
     
     for a in actions:
-        tboard = a[0][0]
-        tside = a[0][1]
-        v = min(v, maxValue(tboard, tside, alpha, beta, count+1, depth)[0])
+        tboard = a[0]
+        tside = a[1]
+        
+        #print(maxValue(tboard, tside, alpha, beta, count+1, depth))
+        if side != tside:
+            v = min(v, maxValue(tboard, tside, alpha, beta, count+1, depth)[0])
+        else:
+            v = min(v, minValue(tboard, tside, alpha, beta, count+1, depth))
+            
         #debug
-        print(str(count) + ':')
-        print('pos: ' + str(a[1]))
-        print('v: ' + str(v))
+        #print(str(count) + ':')
+        #print('pos: ' + str(a[2]))
+        #print('v: ' + str(v))
         if v <= alpha:
             return v
         beta = min(beta, v)
@@ -98,7 +109,7 @@ def nextMoves(board,side):
 
 def judge(board,side):
     
-    move = alphaBetaSearch(board, side, 3)[1]
+    move = alphaBetaSearch(board, side, 8)[2]
             
     return move
         

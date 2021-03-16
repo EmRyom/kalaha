@@ -10,7 +10,9 @@ from kalaha import traverse
 def showBoard(board):
     print(colored("6   5   4   3   2   1",'red'),'\n')
     print('   '.join(str(e) for e in list(reversed(board[0:6]))))
-    print(board[6],"                 ",board[13])
+    n=str(board[6])
+    s=str(board[13])
+    print(n," "*(19-len(n)-len(s)),s)
     print('   '.join(str(e) for e in board[7:13]),'\n')
     print(colored("1   2   3   4   5   6",'cyan'),"\n")
     
