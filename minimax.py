@@ -116,13 +116,26 @@ def nextMoves(board,side):
 
 def judge(board,side):
     
-    move = alphaBetaSearch(board, side, 7)[2]
+    move = alphaBetaSearch(board, side, 11)[2]
             
     return move
 
 def altJudge(board,side,depth):
     return alphaBetaSearch(board, side, depth)[2]
-    
+
+
+def southGreedy(board, side):
+    move=1
+    v=-48
+    for i in range(1,7):
+        b=board.copy()
+        if b[i+6]==0:
+            continue
+        b,s=traverse(b, False, i)
+        if b[13]-b[6]>v:
+            v=b[13]-b[6]
+            move=i
+    return move
 
 def random(board,side):
     c=[]

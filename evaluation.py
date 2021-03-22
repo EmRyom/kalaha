@@ -1,10 +1,10 @@
 from kalaha import traverse
-from minimax import altJudge, random
+from minimax import altJudge, random, southGreedy
 from time import time
 
 def evaluation(n):
     res=[]
-    for depth in range(2,8):
+    for depth in range(1,7):
         w=0
         d=0
         l=0
@@ -31,7 +31,7 @@ def evaluation(n):
                     i = altJudge(board,side,depth)
                     board,side = traverse(board,True,i-1)
                 else:
-                    i = random(board,side)
+                    i = southGreedy(board, side)
                     board,side = traverse(board,False,i+6)
             print(w,d,l,depth)
         res.append([w,d,l,depth,time()-start])
