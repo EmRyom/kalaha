@@ -1,24 +1,26 @@
-
 from kalaha import traverse
-from random import randrange
+
 
 def terminalTest(board):
     
     return (sum(board[0:6])==0 or sum(board[7:13])==0)
 
 
-def utility(board):
+def utility(board, player):
     if terminalTest(board):
         board[6] += sum(board[0:6])
         board[13] += sum(board[7:13])
-    return board[6]-board[13]
+    if player:
+        return board[6]-board[13]
+    else:
+        return board[13]-board[6]
 
 
-def maxValue(board, side, alpha, beta, count, depth): 
+def maxValue(board, side, alpha, beta, count, depth, player): 
     
     # limiting depth    
     if terminalTest(board) or count == depth:
-        return utility(board), None
+        return utility(board, player), None
     
     v = -100
     m = -100
@@ -30,19 +32,12 @@ def maxValue(board, side, alpha, beta, count, depth):
        
         tboard = a[0]
         tside = a[1]
-        pos = a[2]
         
         if tside != side:
-            v = max(v, minValue(tboard, tside, alpha, beta, count+1, depth))
+            v = max(v, minValue(tboard, tside, alpha, beta, count+1, depth, player))
         else:
-            v = max(v, maxValue(tboard, tside, alpha, beta, count+1, depth)[0])
+            v = max(v, maxValue(tboard, tside, alpha, beta, count+1, depth, player)[0])
             
-        #debug
-        '''
-        print(str(count) + ':')
-        print('pos: ' + str(pos))
-        print('v: ' + str(v))
-        '''
         if v >= beta:
             return v, None
         alpha = max(alpha, v)
@@ -56,11 +51,11 @@ def maxValue(board, side, alpha, beta, count, depth):
     return v, final_action
 
 
-def minValue(board, side, alpha, beta, count, depth):
+def minValue(board, side, alpha, beta, count, depth, player):
     
     # limiting depth    
     if terminalTest(board) or count == depth:
-        return utility(board)
+        return utility(board, player)
     
     v = 100
     actions = nextMoves(board, side)
@@ -69,33 +64,18 @@ def minValue(board, side, alpha, beta, count, depth):
         
         tboard = a[0]
         tside = a[1]
-        pos = a[2]
         
         if side != tside:
-            v = min(v, maxValue(tboard, tside, alpha, beta, count+1, depth)[0])
+            v = min(v, maxValue(tboard, tside, alpha, beta, count+1, depth, player)[0])
         else:
-            v = min(v, minValue(tboard, tside, alpha, beta, count+1, depth))
+            v = min(v, minValue(tboard, tside, alpha, beta, count+1, depth, player))
             
-        #debug
-        '''
-        print(str(count) + ':')
-        print('pos: ' + str(pos))
-        print('v: ' + str(v))
-        '''
         if v <= alpha:
             return v
         beta = min(beta, v)
     
     return v
 
-
-def alphaBetaSearch(board, side, depth):
-    
-    final_action = maxValue(board, side, -100, 100, 0, depth)[1]
-    
-    return final_action
-    
-    
 
 def nextMoves(board,side):
     l = []
@@ -114,37 +94,5 @@ def nextMoves(board,side):
     return l
 
 
-def judge(board,side):
-    
-    move = alphaBetaSearch(board, side, 11)[2]
-            
-    return move
-
-def altJudge(board,side,depth):
-    return alphaBetaSearch(board, side, depth)[2]
-
-
-def southGreedy(board, side):
-    move=1
-    v=-48
-    for i in range(1,7):
-        b=board.copy()
-        if b[i+6]==0:
-            continue
-        b,s=traverse(b, False, i)
-        if b[13]-b[6]>v:
-            v=b[13]-b[6]
-            move=i
-    return move
-
-def random(board,side):
-    c=[]
-    for pos in range(1,7):
-        if board[pos-1]==0 and side:
-            continue
-        if board[pos+6]==0 and not side:
-            continue
-        c.append(pos)
-    i = randrange(len(c))
-    return c[i]    
-    
+def judge(board, side, depth):
+    return (maxValue(board, side, -100, 100, 0, depth, side)[1])[2]

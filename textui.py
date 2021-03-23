@@ -1,11 +1,9 @@
 from termcolor import colored
 from sys import exit
-from minimax import judge, random, southGreedy
+from minimax import judge
+from alt import random
 from kalaha import traverse
 
-#board = [4,4,4,4,4,4,0,  4,4,4,4,4,4,0]
-#         N houses    ^   S houses    ^ 
-#                   goal            goal
 
 def showBoard(board):
     print(colored("6   5   4   3   2   1",'red'),'\n')
@@ -31,10 +29,10 @@ def userInput():
             print("Please enter an integer from 1 to 6")
 
 def aiInput(board,side):
-    if side:
-        choice = judge(board,side)
+    if side:                    # depth of minimax
+        choice = judge(board,side,6)
     else:
-        choice = southGreedy(board,side)
+        choice = random(board,side)
     print("AI:",choice,end="")
     if input()=="'": exit()
     return choice
@@ -57,11 +55,18 @@ def gameOver(board):
 
 print("\n\n\nStart!\n")
 
-c=4
-board=[c,c,c,c,c,c,0,  c,c,c,c,c,c,0]
-side = False
-aiN = 1
-aiS = 1
+c=4                                     # Amount of stones per house
+#     [4,4,4,4,4,4,0,  4,4,4,4,4,4,0]     
+board=[c,c,c,c,c,c,0,  c,c,c,c,c,c,0]   # Initial state
+#      N houses    ^   S houses    ^ 
+#                goal            goal
+
+# Starting player (True : North)
+side = True                            
+# AI switch for North (minimax)
+aiN = True                                 
+# AI switch for South (random)
+aiS = False                                
 
 while(True):
     if sum(board[0:6])==0 or sum(board[7:13])==0:
