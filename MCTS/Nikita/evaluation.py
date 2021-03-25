@@ -4,6 +4,8 @@ import mctsAlgRewrite
 from time import time
 from termcolor import colored
 import sys
+from datetime import datetime
+
 
 def traverse(board,side,pos):
     stack = board[pos]
@@ -62,10 +64,8 @@ def makeAChoice(board, side):
 
     theNode = mctsAlgRewrite.Node(board) 
     algoInstance = mctsAlgRewrite.MCTS(board,0,theNode, 35)
-    indexToChoose = algoInstance.iterateAndChoose(40, theNode)
-    #print("1indexto choose: ", indexToChoose+1 ,"(",indexToChoose+7, ")")
+    indexToChoose = algoInstance.iterateAndChoose(80, theNode)
     return indexToChoose+7
-    #return userInput()+6
 
 def showBoard(board):
     print("\n")
@@ -85,6 +85,7 @@ def evaluation(n):
         c=4
         board=[c,c,c,c,c,c,0,  c,c,c,c,c,c,0]
         side = True
+        startOneGame=time()
         while(True):
             #showBoard(board)
             if sum(board[0:6])==0 or sum(board[7:13])==0:
@@ -110,17 +111,17 @@ def evaluation(n):
                 #i = userInput()
                 i = makeAChoice(board,side)
                 board,side = traverse(board,False,i)
-        print(w,d,l)
+        print(w,d,l,"  ", time()-startOneGame, " sec")
     res.append([w,d,l,time()-start])
     print(res)
     
  
-    
+'''   
 rangeN = 10
 southWins = 0;
 northWins = 0;
 
-'''
+
 def userInput():
     while(True):
         try:
