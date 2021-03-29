@@ -3,7 +3,7 @@ from minimax import judge
 from alt import random, southGreedy
 import mctsAlg
 
-def makeAChoice(board, side):
+def makeMctsAIChoice(board, side):
     theNode = mctsAlg.Node(board) 
     algoInstance = mctsAlg.MCTS(board,0,theNode, 200)
     indexToChoose = algoInstance.iterateAndChoose(20, theNode)
@@ -39,7 +39,7 @@ def evaluation(n,nd,sd):
                 i = judge(board,side,nd)
                 board,side = traverse(board,True,i-1)
             else:
-                i = makeAChoice(board, side)
+                i = makeMctsAIChoice(board, side)
                 #i = random(board,side)
                 board,side = traverse(board,False,i-6)
         print(w,d,l)        
