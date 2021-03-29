@@ -1,6 +1,15 @@
 from kalaha import traverse
 from minimax import judge
 from alt import random, southGreedy
+import mctsAlg
+
+def makeAChoice(board, side):
+    theNode = mctsAlg.Node(board) 
+    algoInstance = mctsAlg.MCTS(board,0,theNode, 200)
+    indexToChoose = algoInstance.iterateAndChoose(20, theNode)
+    #done due to parameter specification that is passed to 'traverse' function in evaluation
+    return (indexToChoose+7)+6
+
 
 def evaluation(n,nd,sd):
     res=[]
@@ -30,11 +39,14 @@ def evaluation(n,nd,sd):
                 i = judge(board,side,nd)
                 board,side = traverse(board,True,i-1)
             else:
-                i = judge(board,side,sd)
+                i = makeAChoice(board, side)
                 #i = random(board,side)
-                board,side = traverse(board,False,i+6)
-        
+                board,side = traverse(board,False,i-6)
+        print(w,d,l)        
     print(w,d,l,nd,sd)
+    
+    
+evaluation(10,5,5)
 """if w>l:
         res.append(['n',nd,sd])
     if w<l:

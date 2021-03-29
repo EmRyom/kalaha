@@ -5,6 +5,8 @@ from random import randrange
 #from termcolor import colored
 
 
+
+
 class MCTS:
     
     def __init__(self,board_param, side_param, currentNode_param, numOfSimulations_param=10):
@@ -15,11 +17,9 @@ class MCTS:
 
             
     def iterateAndChoose(self, numOfIterations, theNode):   
-        #print("piska test 1")
         while (numOfIterations > 0 ):
             wins, losts = self.flow(theNode)
             numOfIterations -=1
-        #print("length:   ", len(theNode.getActionsFromNode()))
         bestANode, bestANodeIndex = self.chooseBestChildren(theNode)
         
         return bestANodeIndex
@@ -77,8 +77,7 @@ class MCTS:
                 else:
                     nodeToExplore.updateScoreVisits(0, 1)
                     return 0, 1
-            
-        #return  cWins,cTries,nodeToExplore
+
                   
         
         
@@ -234,7 +233,7 @@ class MCTS:
 # ROLLOUT END
 
 
-    
+
 class Node:
     
     def __init__(self, currBoard_param, score_param=0, visits_param=0, parentNodeVisits_param=0, nextTurnTakenBy_param = False ):
@@ -258,8 +257,6 @@ class Node:
     def countUCB(self, parentVisits_param = 0):
         if (self.visits == 0):
             return 99999
-       # if (self.score == -9999):
-        #    return -9999
         else:
             return self.score / self.visits + 2 * math.sqrt( ln(parentVisits_param) / self.visits ) 
          
@@ -282,3 +279,7 @@ class Node:
         return self.nextTurnTakenBy 
 
  
+
+
+    
+
