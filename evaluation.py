@@ -46,7 +46,6 @@ def evaluation(n,nd,sd):
     print(w,d,l,nd,sd)
     
     
-evaluation(10,5,5)
 """if w>l:
         res.append(['n',nd,sd])
     if w<l:
