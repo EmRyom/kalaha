@@ -40,6 +40,7 @@ def evaluation(n,nd,sd):
                 board,side = traverse(board,True,i-1)
             else:
                 i = makeMctsAIChoice(board, side)
+                #i = judge(board,side,sd)
                 #i = random(board,side)
                 board,side = traverse(board,False,i-6)
         print(w,d,l)        

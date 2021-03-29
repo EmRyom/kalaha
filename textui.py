@@ -3,7 +3,14 @@ from sys import exit
 from minimax import judge
 from alt import random
 from kalaha import traverse
+import mctsAlg
 
+def makeMctsAIChoice(board, side):
+    theNode = mctsAlg.Node(board) 
+    algoInstance = mctsAlg.MCTS(board,0,theNode, 200)
+    indexToChoose = algoInstance.iterateAndChoose(20, theNode)
+    #done due to parameter specification that is passed to 'traverse' function in evaluation
+    return indexToChoose+1
 
 def showBoard(board):
     print(colored("6   5   4   3   2   1",'red'),'\n')
@@ -29,8 +36,9 @@ def userInput():
             print("Please enter an integer from 1 to 6")
 
 def aiInput(board,side):
-    if side:                    # depth of minimax
-        choice = judge(board,side,6)
+    if side:         
+        print("yes")
+        choice = judge(board,side,6) # 6 = depth of minimax 
     else:
         choice = random(board,side)
     print("AI:",choice,end="")
@@ -64,9 +72,12 @@ board=[c,c,c,c,c,c,0,  c,c,c,c,c,c,0]   # Initial state
 # Starting player (True : North)
 side = True                            
 # AI switch for North (minimax)
-aiN = True                                 
+aiN = False                                 
 # AI switch for South (random)
-aiS = False                                
+aiS = True        
+# switch to choose the algorithm. TRUE = Minimax, FALSE = MCTS. 
+# MCTS is active only for South player
+algorithm = True                        
 
 while(True):
     if sum(board[0:6])==0 or sum(board[7:13])==0:
@@ -83,9 +94,13 @@ while(True):
     else:
         print(colored("South","cyan"),"players turn")
         if aiS:
-            i = aiInput(board,False)
+            if algorithm:
+                i = aiInput(board,False)
+            else:
+                i = makeMctsAIChoice(board,side)
         else:
             i = userInput()
         board,side = traverse(board,False,i+6)
+
     
     
